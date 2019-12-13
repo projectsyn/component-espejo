@@ -1,0 +1,14 @@
+parameters:
+  espejo:
+    namespace: syn-espejo
+
+  kapitan:
+    compile:
+      - input_paths:
+          - espejo/component/app.jsonnet
+        input_type: jsonnet
+        output_path: apps/
+      - input_paths:
+          - espejo/component/main.jsonnet
+        input_type: jsonnet
+        output_path: espejo/
