@@ -36,7 +36,7 @@ local deployment = kube.Deployment('espejo') {
                     espejo: kube.Container('espejo') {
                         image: params.images.espejo.image + ':' + params.images.espejo.tag,
                         env_+: {
-                            'WATCH_NAMESPACE': params.watch_namespace,
+                            'WATCH_NAMESPACE': kube.FieldRef('metadata.namespace'),
                             'POD_NAME': kube.FieldRef('metadata.name'),
                             'OPERATOR_NAME': 'espejo',
                         },
