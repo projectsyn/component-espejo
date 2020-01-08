@@ -6,7 +6,6 @@ parameters:
       espejo:
         image: docker.io/vshn/espejo
         tag: v0.0.4
-    watch_namespace: ""
     cluster_role_rules:
     # Required for operator to function
     - apiGroups:
