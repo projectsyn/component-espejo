@@ -5,11 +5,15 @@ parameters:
         source: https://raw.githubusercontent.com/vshn/espejo/${espejo:git_tag}/deploy/crds/sync_v1alpha1_syncconfig_crd.yaml
         output_path: dependencies/espejo/manifests/${espejo:git_tag}/crds/sync_v1alpha1_syncconfig_crd.yaml
     compile:
-      - output_path: espejo/00_crds/
-        input_type: copy
-        input_paths:
-          - espejo/manifests/${espejo:git_tag}/crds/
-      - input_paths:
-          - espejo/component/main.jsonnet
-        input_type: jsonnet
-        output_path: espejo/
+    - input_paths:
+        - espejo/component/app.jsonnet
+      input_type: jsonnet
+      output_path: apps/
+    - output_path: espejo/00_crds/
+      input_type: copy
+      input_paths:
+        - espejo/manifests/${espejo:git_tag}/crds/
+    - input_paths:
+        - espejo/component/main.jsonnet
+      input_type: jsonnet
+      output_path: espejo/
