@@ -5,11 +5,10 @@ parameters:
     images:
       espejo:
         image: docker.io/vshn/espejo
-        tag: v0.0.4
+        tag: 'v0.0.4@sha256:fc28bc419cc464a96d4519f0e6ef79e7359ee4328d34dc6dc6606260b4348b3f'
     cluster_role_rules:
-    # Required for operator to function
     - apiGroups:
-      - ""
+      - ''
       resources:
       - namespaces
       verbs:
@@ -22,9 +21,8 @@ parameters:
       - '*'
       verbs:
       - '*'
-    # Required to sync objects
     - apiGroups:
-      - ""
+      - ''
       resources:
       - services
       - endpoints
@@ -33,16 +31,16 @@ parameters:
       - secrets
       - pods
       verbs:
-      - "*"
+      - '*'
     - apiGroups:
       - networking.k8s.io
       resources:
       - networkpolicies
       verbs:
-      - "*"
+      - '*'
     - apiGroups:
       - extensions
       resources:
       - networkpolicies
       verbs:
-      - "*"
+      - '*'
