@@ -13,8 +13,8 @@ local params = inv.parameters.espejo;
   * \brief Helper to create SyncConfig object.
   *
   * Creates a bare bone SyncConfig in the namespace where Espejo is watching them.
-  * Objects of the smae kind in the same namespace must hace uniqe names.
-  * It is suggeted to prefix the name with the name of the component calling it.
+  * Objects of the same kind in the same namespace must have unique names.
+  * It is suggested to prefix the name with the name of the component calling it.
   *
   * \arg The name of the sync config.
   * \return A SyncConfig object.
