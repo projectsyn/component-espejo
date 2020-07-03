@@ -20,7 +20,7 @@ local params = inv.parameters.espejo;
   * \return A SyncConfig object.
   */
 local syncConfig(name) = kube._Object('sync.appuio.ch/v1alpha1', 'SyncConfig', name) {
-  'metadata+': {
+  metadata+: {
     namespace: params.namespace,
   },
   spec: {},
