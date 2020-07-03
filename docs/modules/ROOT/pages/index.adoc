@@ -1,0 +1,3 @@
+= Espejo: A Commodore component to manage Espejo
+
+{doctitle} is a Commodore component for Managing Espejo.
