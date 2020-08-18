@@ -22,6 +22,9 @@ local params = inv.parameters.espejo;
 local syncConfig(name) = kube._Object('sync.appuio.ch/v1alpha1', 'SyncConfig', name) {
   metadata+: {
     namespace: params.namespace,
+    annotations+: {
+      'argocd.argoproj.io/sync-options': 'SkipDryRunOnMissingResource=true',
+    },
   },
   spec: {},
 };
