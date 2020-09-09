@@ -12,9 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Made component open source ([#1]) 
+- Made component open source ([#1])
+- Pin version to released tag ([#5])
 
 [Unreleased]: https://github.com/projectsyn/component-espejo/compare/7127fc3...HEAD
 [#1]: https://github.com/projectsyn/component-espejo/pull/1
 [#2]: https://github.com/projectsyn/component-espejo/pull/2
 [#4]: https://github.com/projectsyn/component-espejo/pull/4
+[#5]: https://github.com/projectsyn/component-espejo/pull/5
