@@ -1,7 +1,7 @@
 parameters:
   espejo:
     namespace: syn-espejo
-    git_tag: master
+    git_tag: v0.0.4
     images:
       espejo:
         image: docker.io/vshn/espejo
