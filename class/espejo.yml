@@ -2,8 +2,8 @@ parameters:
   kapitan:
     dependencies:
       - type: https
-        source: https://raw.githubusercontent.com/vshn/espejo/${espejo:git_tag}/deploy/crds/sync_v1alpha1_syncconfig_crd.yaml
-        output_path: dependencies/espejo/manifests/${espejo:git_tag}/crds/sync_v1alpha1_syncconfig_crd.yaml
+        source: https://github.com/vshn/espejo/releases/download/${espejo:git_tag}/espejo-crd.yaml
+        output_path: dependencies/espejo/manifests/${espejo:git_tag}/crds/espejo-crd.yaml
     compile:
       - input_paths:
           - espejo/component/app.jsonnet

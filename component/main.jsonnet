@@ -26,23 +26,30 @@ local deployment = kube.Deployment('espejo') {
   metadata+: {
     namespace: params.namespace,
     labels: {
-      app: 'espejo',
+      'app.kubernetes.io/name': 'espejo',
+      'app.kubernetes.io/managed-by': 'syn',
     },
   },
   spec+: {
     template+: {
       spec+: {
+        serviceAccountName: service_account.metadata.name,
         containers_+: {
           espejo: kube.Container('espejo') {
             image: params.images.espejo.image + ':' + params.images.espejo.tag,
             env_+: {
               WATCH_NAMESPACE: kube.FieldRef('metadata.namespace'),
-              POD_NAME: kube.FieldRef('metadata.name'),
-              OPERATOR_NAME: 'espejo',
             },
+            args_+: params.args,
+            resources: params.resources,
+            ports: [
+              {
+                name: 'http',
+                containerPort: 8080,
+              },
+            ],
           },
         },
-        serviceAccountName: service_account.metadata.name,
       },
     },
   },
