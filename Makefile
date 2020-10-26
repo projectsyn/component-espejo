@@ -19,6 +19,9 @@ YAMLLINT_CONFIG ?= .yamllint.yml
 YAMLLINT_IMAGE  ?= docker.io/cytopia/yamllint:latest
 YAMLLINT_DOCKER ?= $(DOCKER_CMD) $(DOCKER_ARGS) $(YAMLLINT_IMAGE)
 
+COMPONENT_NAME ?= espejo
+COMMODORE_CMD ?= docker run --rm --user="$(shell id -u)" --volume "${PWD}/../../:/app/data" --workdir /app/data projectsyn/commodore:latest component compile dependencies/$(COMPONENT_NAME)
+
 .PHONY: all
 all: lint
 
@@ -39,3 +42,11 @@ format: format_jsonnet
 .PHONY: format_jsonnet
 format_jsonnet: $(JSONNET_FILES)
 	$(JSONNET_DOCKER) $(JSONNETFMT_ARGS) -- $?
+
+compile:
+	$(COMMODORE_CMD)
+
+test: compile test_go
+
+test_go:
+	cd tests/go && go test ./...
