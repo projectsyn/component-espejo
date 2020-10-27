@@ -19,12 +19,10 @@ YAMLLINT_CONFIG ?= .yamllint.yml
 YAMLLINT_IMAGE  ?= docker.io/cytopia/yamllint:latest
 YAMLLINT_DOCKER ?= $(DOCKER_CMD) $(DOCKER_ARGS) $(YAMLLINT_IMAGE)
 
-COMPONENT_NAME ?= espejo
-COMMODORE_CMD ?= docker run --rm --user="$(shell id -u)" --volume "${PWD}/../../:/app/data" --workdir /app/data projectsyn/commodore:latest component compile dependencies/$(COMPONENT_NAME)
+COMPONENT_NAME ?= $(shell basename ${PWD})
+COMMODORE_CMD  ?= docker run --rm --user="$(shell id -u)" --volume "${PWD}:/app/$(COMPONENT_NAME)" --workdir /app/$(COMPONENT_NAME) projectsyn/commodore:latest component compile . -J vendor -f tests/test.yml
 
-CONFTEST_FILES ?= $(shell find . -type f -wholename './compiled/test/espejo/*.yaml')
-
-CONFTEST_CMD ?= docker run --rm --volume "${PWD}/tests/conftest:/policy" --volume "${PWD}:/test" --workdir /test openpolicyagent/conftest:latest test --policy /policy
+CONFTEST_CMD   ?= docker run --rm --volume "${PWD}/tests/conftest:/policy" --volume "${PWD}:/test" --workdir /test openpolicyagent/conftest:latest test --policy /policy
 
 .PHONY: all
 all: lint
@@ -55,5 +53,5 @@ test: compile test_go test_conftest
 test_go:
 	cd tests/go && go test ./...
 
-test_conftest: $(CONFTEST_FILES)
-	$(CONFTEST_CMD) $?
+test_conftest:
+	$(CONFTEST_CMD) $(shell find . -type f -wholename './compiled/test/$(COMPONENT_NAME)/*.yaml')
