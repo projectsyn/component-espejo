@@ -1,11 +1,25 @@
 parameters:
   espejo:
     namespace: syn-espejo
-    git_tag: v0.0.4
+    git_tag: v0.3.1
     images:
       espejo:
         image: docker.io/vshn/espejo
-        tag: 'v0.0.4@sha256:fc28bc419cc464a96d4519f0e6ef79e7359ee4328d34dc6dc6606260b4348b3f'
+        tag: 'v0.3.1@sha256:a0792c209f41aa17636526e08074b1d6ebe7d452df6260325055a10ddcfa3ea9'
+    resources:
+      limits:
+        cpu: 300m
+        memory: 30Mi
+      requests:
+        cpu: 20m
+        memory: 20Mi
+    args:
+      reconcile-interval: 10m
+      verbose: "false"
+      enable-leader-election: "true"
+      metrics-addr: ":8080"
+
+    extraArgs: []
     cluster_role_rules:
       - apiGroups: ['']
         resources: [namespaces]

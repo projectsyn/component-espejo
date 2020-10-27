@@ -9,14 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Helper to create SyncConfig objects ([#2])
 - Argo CD sync option to skip missing CRDs ([#4])
+- New Parameters that are supported in Espejo from v0.3.0 onward ([#7])
 
 ### Changed
 
 - Made component open source ([#1])
 - Pin version to released tag ([#5])
+- Update Espejo to v0.3.1 ([#7])
 
 [Unreleased]: https://github.com/projectsyn/component-espejo/compare/7127fc3...HEAD
 [#1]: https://github.com/projectsyn/component-espejo/pull/1
 [#2]: https://github.com/projectsyn/component-espejo/pull/2
 [#4]: https://github.com/projectsyn/component-espejo/pull/4
 [#5]: https://github.com/projectsyn/component-espejo/pull/5
+[#7]: https://github.com/projectsyn/component-espejo/pull/7
