@@ -35,5 +35,9 @@ jobs:
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-
-      - name: Run Tests
-        run: cd ${{ env.COMPONENT_NAME }} && make test
+      - name: Compile component
+        run: cd ${{ env.COMPONENT_NAME }} && make compile
+      - name: Run Unit tests
+        run: cd ${{ env.COMPONENT_NAME }} && make test_go
+      - name: Run Conftest tests
+        run: cd ${{ env.COMPONENT_NAME }} && make test_conftest
