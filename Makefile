@@ -46,6 +46,7 @@ format_jsonnet: $(JSONNET_FILES)
 	$(JSONNET_DOCKER) $(JSONNETFMT_ARGS) -- $?
 
 compile:
+	jb install
 	$(COMMODORE_CMD)
 
 test: compile test_go test_conftest

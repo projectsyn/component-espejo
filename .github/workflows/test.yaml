@@ -36,7 +36,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
       - name: Compile component
-        run: cd ${{ env.COMPONENT_NAME }} && make compile
+        run: |
+          GO111MODULE="on" go get github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb
+          cd ${{ env.COMPONENT_NAME }}
+          make compile
       - name: Determining tests to run
         id: determine-tests
         run: |
