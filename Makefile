@@ -51,10 +51,10 @@ compile:
 test: compile test_go test_conftest
 
 test_go:
-	cd tests/go && go test -v ./...
+	@if [ -f "tests/go/go.mod" ]; then cd tests/go && go test -v ./...; else echo "===> Skipping Go unit tests"; fi
 
 test_conftest:
-	$(CONFTEST_CMD) $(shell find . -type f -wholename './compiled/$(COMPONENT_NAME)/*.yaml')
+	@if [ -d "tests/conftest" ]; then $(CONFTEST_CMD) $(shell find . -type f -wholename './compiled/$(COMPONENT_NAME)/*.yaml'); else echo "===> Skipping Conftest policies"; fi
 
 clean:
 	rm -r compiled manifests dependencies || true

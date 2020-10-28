@@ -37,7 +37,14 @@ jobs:
             ${{ runner.os }}-go-
       - name: Compile component
         run: cd ${{ env.COMPONENT_NAME }} && make compile
+      - name: Determining tests to run
+        id: determine-tests
+        run: |
+          if [ -f "${{ env.COMPONENT_NAME }}/tests/go/go.mod" ]; then echo "::set-output name=RUN_GO_TESTS::true" ; fi
+          if [ -d "${{ env.COMPONENT_NAME }}/tests/conftest" ]; then echo "::set-output name=RUN_CONFTESTS::true" ; fi
       - name: Run Unit tests
         run: cd ${{ env.COMPONENT_NAME }} && make test_go
+        if: ${{ steps.determine-tests.outputs.RUN_GO_TESTS == 'true' }}
       - name: Run Conftest tests
         run: cd ${{ env.COMPONENT_NAME }} && make test_conftest
+        if: ${{ steps.determine-tests.outputs.RUN_CONFTESTS == 'true' }}
