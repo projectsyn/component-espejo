@@ -51,7 +51,10 @@ compile:
 test: compile test_go test_conftest
 
 test_go:
-	cd tests/go && go test ./...
+	cd tests/go && go test -v ./...
 
 test_conftest:
-	$(CONFTEST_CMD) $(shell find . -type f -wholename './compiled/test/$(COMPONENT_NAME)/*.yaml')
+	$(CONFTEST_CMD) $(shell find . -type f -wholename './compiled/$(COMPONENT_NAME)/*.yaml')
+
+clean:
+	rm -r compiled manifests dependencies || true

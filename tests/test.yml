@@ -1,7 +1,7 @@
 parameters:
   kapitan:
     dependencies:
-    - type: https
-      source: https://github.com/vshn/espejo/releases/download/${espejo:git_tag}/espejo-crd.yaml
-      # Need to fix this path
-      output_path: manifests/${espejo:git_tag}/crds/espejo-crd.yaml
+      - type: https
+        source: https://github.com/vshn/espejo/releases/download/${espejo:git_tag}/espejo-crd.yaml
+        # Need to fix this path
+        output_path: manifests/${espejo:git_tag}/crds/espejo-crd.yaml
