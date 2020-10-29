@@ -1,9 +1,10 @@
-package _go
+package main
 
 import (
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"io/ioutil"
 	appsv1 "k8s.io/api/apps/v1"
+	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
@@ -13,25 +14,34 @@ import (
 	"testing"
 )
 
+// TODO: Add possibility to decode objects from YAML that contain multiple documents
+
 func DecodeDeployment(t *testing.T, path string) *appsv1.Deployment {
 	subject := &appsv1.Deployment{}
 	scheme := NewSchemeWithDefault(t)
-	assert.NoError(t, appsv1.AddToScheme(scheme))
+	require.NoError(t, appsv1.AddToScheme(scheme))
 	return DecodeWithSchema(t, path, subject, scheme).(*appsv1.Deployment)
+}
+
+func DecodeNamespace(t *testing.T, path string) *corev1.Namespace {
+	subject := &corev1.Namespace{}
+	scheme := NewSchemeWithDefault(t)
+	require.NoError(t, appsv1.AddToScheme(scheme))
+	return DecodeWithSchema(t, path, subject, scheme).(*corev1.Namespace)
 }
 
 func DecodeWithSchema(t *testing.T, path string, into runtime.Object, schema *runtime.Scheme) runtime.Object {
 	data, err := ioutil.ReadFile(path)
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	kind := into.GetObjectKind().GroupVersionKind()
 	decode, _, err := serializer.NewCodecFactory(schema).UniversalDeserializer().Decode(data, &kind, into)
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	return decode
 }
 
 func NewSchemeWithDefault(t *testing.T) *runtime.Scheme {
 	scheme := runtime.NewScheme()
-	assert.NoError(t, clientgoscheme.AddToScheme(scheme))
+	require.NoError(t, clientgoscheme.AddToScheme(scheme))
 	return scheme
 }
 

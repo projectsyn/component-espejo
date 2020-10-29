@@ -5,8 +5,11 @@ SHELL := bash
 .DELETE_ON_ERROR:
 .SUFFIXES:
 
+# Commodore takes the root dir name as the component name
+COMPONENT_NAME ?= $(shell basename ${PWD} | sed s/component-//)
+
 DOCKER_CMD   ?= docker
-DOCKER_ARGS  ?= run --rm --user "$$(id -u)" -v "$${PWD}:/component" --workdir /component
+DOCKER_ARGS  ?= run --rm --user "$$(id -u)" -v "$${PWD}:/$(COMPONENT_NAME)" --workdir /$(COMPONENT_NAME)
 
 JSONNET_FILES   ?= $(shell find . -type f -name '*.*jsonnet' -or -name '*.libsonnet')
 JSONNETFMT_ARGS ?= --in-place
@@ -19,10 +22,10 @@ YAMLLINT_CONFIG ?= .yamllint.yml
 YAMLLINT_IMAGE  ?= docker.io/cytopia/yamllint:latest
 YAMLLINT_DOCKER ?= $(DOCKER_CMD) $(DOCKER_ARGS) $(YAMLLINT_IMAGE)
 
-COMPONENT_NAME ?= $(shell basename ${PWD} | sed s/component-//)
-COMMODORE_CMD  ?= docker run --rm --user="$(shell id -u)" --volume "${PWD}:/app/$(COMPONENT_NAME)" --workdir /app/$(COMPONENT_NAME) projectsyn/commodore:latest component compile . -f tests/test.yml
+COMMODORE_CMD  ?= $(DOCKER_CMD) $(DOCKER_ARGS) projectsyn/commodore:latest component compile . -f tests/test.yml
+JB_CMD         ?= $(DOCKER_CMD) $(DOCKER_ARGS) --entrypoint /usr/local/bin/jb projectsyn/commodore:latest install
 
-CONFTEST_CMD   ?= docker run --rm --volume "${PWD}/tests/conftest:/policy" --volume "${PWD}:/test" --workdir /test openpolicyagent/conftest:latest test --policy /policy
+CONFTEST_CMD   ?= $(DOCKER_CMD) $(DOCKER_ARGS) --volume "${PWD}/tests/policies:/policy" openpolicyagent/conftest:latest test --policy /policy
 
 .PHONY: all
 all: lint
@@ -45,17 +48,24 @@ format: format_jsonnet
 format_jsonnet: $(JSONNET_FILES)
 	$(JSONNET_DOCKER) $(JSONNETFMT_ARGS) -- $?
 
+.PHONY: compile
 compile:
-	jb install
+	$(JB_CMD)
 	$(COMMODORE_CMD)
 
+.PHONY: test
 test: compile test_go test_conftest
 
+.PHONY: test_go
 test_go:
-	@if [ -f "tests/go/go.mod" ]; then cd tests/go && go test -v ./...; else echo "===> Skipping Go unit tests"; fi
+	@echo "===> Running Go unit tests"
+	cd tests/unit && go test -v ./...
 
+.PHONY: test_conftest
 test_conftest:
-	@if [ -d "tests/conftest" ]; then $(CONFTEST_CMD) $(shell find . -type f -wholename './compiled/$(COMPONENT_NAME)/*.yaml'); else echo "===> Skipping Conftest policies"; fi
+	@echo "===> Running Conftest policies";
+	@$(CONFTEST_CMD) $(shell find . -type f -wholename './compiled/$(COMPONENT_NAME)/*.yaml')
 
+.PHONY: clean
 clean:
-	rm -r compiled manifests dependencies || true
+	rm -r compiled manifests dependencies vendor || true

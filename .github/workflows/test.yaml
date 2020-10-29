@@ -22,6 +22,9 @@ jobs:
         run: make ${{ matrix.command }}
   test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.COMPONENT_NAME }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -36,18 +39,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
       - name: Compile component
-        run: |
-          GO111MODULE="on" go get github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb
-          cd ${{ env.COMPONENT_NAME }}
-          make compile
-      - name: Determining tests to run
-        id: determine-tests
-        run: |
-          if [ -f "${{ env.COMPONENT_NAME }}/tests/go/go.mod" ]; then echo "::set-output name=RUN_GO_TESTS::true" ; fi
-          if [ -d "${{ env.COMPONENT_NAME }}/tests/conftest" ]; then echo "::set-output name=RUN_CONFTESTS::true" ; fi
+        run: make compile
       - name: Run Unit tests
-        run: cd ${{ env.COMPONENT_NAME }} && make test_go
-        if: ${{ steps.determine-tests.outputs.RUN_GO_TESTS == 'true' }}
+        run: make test_go
       - name: Run Conftest tests
-        run: cd ${{ env.COMPONENT_NAME }} && make test_conftest
-        if: ${{ steps.determine-tests.outputs.RUN_CONFTESTS == 'true' }}
+        run: make test_conftest
