@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"testing"
 )
 
@@ -12,6 +13,7 @@ var (
 func Test_Deployment_DefaultParameters(t *testing.T) {
 
 	subject := DecodeDeployment(t, testPath+"/10_deployment.yaml")
+	require.NotEmpty(t, subject.Spec.Template.Spec.Containers)
 	container := subject.Spec.Template.Spec.Containers[0]
 
 	assert.Equal(t, "espejo", container.Name)
@@ -20,6 +22,7 @@ func Test_Deployment_DefaultParameters(t *testing.T) {
 	assert.Contains(t, container.Args, "--metrics-addr=:8080")
 	assert.Contains(t, container.Args, "--enable-leader-election=true")
 
+	require.NotEmpty(t, container.Env)
 	env := container.Env[0]
 	assert.Equal(t, "WATCH_NAMESPACE", env.Name)
 	assert.Equal(t, "metadata.namespace", env.ValueFrom.FieldRef.FieldPath)
