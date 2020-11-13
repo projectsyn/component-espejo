@@ -1,11 +1,11 @@
 parameters:
   espejo:
     namespace: syn-espejo
-    git_tag: v0.3.1
+    git_tag: v0.3.2
     images:
       espejo:
         image: docker.io/vshn/espejo
-        tag: 'v0.3.1@sha256:a0792c209f41aa17636526e08074b1d6ebe7d452df6260325055a10ddcfa3ea9'
+        tag: 'v0.3.2@sha256:3c49f62927b3eea24cb69efc738f97d979d172ad791e5f9b8d981b667d4150c1'
     resources:
       limits:
         cpu: 300m
