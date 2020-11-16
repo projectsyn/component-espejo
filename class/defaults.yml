@@ -4,7 +4,7 @@ parameters:
     git_tag: v0.3.2
     images:
       espejo:
-        image: docker.io/vshn/espejo
+        image: quay.io/vshn/espejo
         tag: 'v0.3.2@sha256:3c49f62927b3eea24cb69efc738f97d979d172ad791e5f9b8d981b667d4150c1'
     resources:
       limits:
