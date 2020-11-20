@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update Espejo to v0.3.1 ([#7])
 - Update Espejo to v0.3.2 ([#10])
 - Switch docker registry from docker.io to quay.io ([#11])
+- Change the JSONNET_IMAGE from docker.io to quay.io ([#12])
 
 [Unreleased]: https://github.com/projectsyn/component-espejo/compare/7127fc3...HEAD
 [#1]: https://github.com/projectsyn/component-espejo/pull/1
@@ -27,3 +28,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#7]: https://github.com/projectsyn/component-espejo/pull/7
 [#10]: https://github.com/projectsyn/component-espejo/pull/10
 [#11]: https://github.com/projectsyn/component-espejo/pull/11
+[#12]: https://github.com/projectsyn/component-espejo/pull/12
