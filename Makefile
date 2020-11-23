@@ -13,7 +13,7 @@ DOCKER_ARGS  ?= run --rm --user "$$(id -u)" -v "$${PWD}:/$(COMPONENT_NAME)" --wo
 
 JSONNET_FILES   ?= $(shell find . -type f -name '*.*jsonnet' -or -name '*.libsonnet')
 JSONNETFMT_ARGS ?= --in-place
-JSONNET_IMAGE   ?= docker.io/bitnami/jsonnet:latest
+JSONNET_IMAGE   ?= quay.io/bitnami/jsonnet:latest
 JSONNET_DOCKER  ?= $(DOCKER_CMD) $(DOCKER_ARGS) --entrypoint=jsonnetfmt $(JSONNET_IMAGE)
 
 YAML_FILES      ?= $(shell find . -type f -name '*.yaml' -or -name '*.yml')
