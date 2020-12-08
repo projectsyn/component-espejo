@@ -38,6 +38,7 @@ parameters:
           - configmaps
           - secrets
           - pods
+          - resourcequotas
         verbs: ['*']
       - apiGroups: [networking.k8s.io]
         resources: [networkpolicies]
