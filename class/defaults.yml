@@ -46,3 +46,7 @@ parameters:
       - apiGroups: [extensions]
         resources: [networkpolicies]
         verbs: ['*']
+      # OpenShift specific
+      - apiGroups: [network.openshift.io]
+        resources: [egressnetworkpolicies]
+        verbs: ['*']
