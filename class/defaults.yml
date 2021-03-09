@@ -9,10 +9,10 @@ parameters:
     resources:
       limits:
         cpu: 300m
-        memory: 30Mi
+        memory: 100Mi
       requests:
         cpu: 20m
-        memory: 20Mi
+        memory: 50Mi
     args:
       reconcile-interval: 10m
       verbose: "false"
