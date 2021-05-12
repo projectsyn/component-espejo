@@ -22,7 +22,7 @@ parameters:
     extraArgs: []
     cluster_role_rules:
       - apiGroups: ['']
-        resources: [namespaces]
+        resources: [namespaces, namespaces/status]
         verbs:
           - get
           - list
@@ -45,4 +45,7 @@ parameters:
         verbs: ['*']
       - apiGroups: [extensions]
         resources: [networkpolicies]
+        verbs: ['*']
+      - apiGroups: [coordination.k8s.io]
+        resources: [leases]
         verbs: ['*']
