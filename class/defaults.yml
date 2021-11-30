@@ -49,3 +49,6 @@ parameters:
       - apiGroups: [coordination.k8s.io]
         resources: [leases]
         verbs: ['*']
+      - apiGroups: [cilium.io]
+        resources: [ciliumnetworkpolicies]
+        verbs: ['*']
