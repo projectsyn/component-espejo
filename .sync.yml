@@ -1,0 +1,5 @@
+---
+:global:
+  componentName: espejo
+  feature_goUnitTests: true
+  feature_goldenTests: true
