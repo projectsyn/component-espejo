@@ -1,3 +1,9 @@
+#
+# File managed by ModuleSync - Do Not Edit
+#
+# Additional Makefiles can be added to `.sync.yml` in 'Makefile.includes'
+#
+
 MAKEFLAGS += --warn-undefined-variables
 SHELL := bash
 .SHELLFLAGS := -eu -o pipefail -c
@@ -5,67 +11,65 @@ SHELL := bash
 .DELETE_ON_ERROR:
 .SUFFIXES:
 
-# Commodore takes the root dir name as the component name
-COMPONENT_NAME ?= $(shell basename ${PWD} | sed s/component-//)
+include Makefile.vars.mk
 
-DOCKER_CMD   ?= docker
-DOCKER_ARGS  ?= run --rm --user "$$(id -u)" -v "$${PWD}:/$(COMPONENT_NAME)" --workdir /$(COMPONENT_NAME)
-
-JSONNET_FILES   ?= $(shell find . -type f -name '*.*jsonnet' -or -name '*.libsonnet')
-JSONNETFMT_ARGS ?= --in-place
-JSONNET_IMAGE   ?= quay.io/bitnami/jsonnet:latest
-JSONNET_DOCKER  ?= $(DOCKER_CMD) $(DOCKER_ARGS) --entrypoint=jsonnetfmt $(JSONNET_IMAGE)
-
-YAML_FILES      ?= $(shell find . -type f -name '*.yaml' -or -name '*.yml')
-YAMLLINT_ARGS   ?= --no-warnings
-YAMLLINT_CONFIG ?= .yamllint.yml
-YAMLLINT_IMAGE  ?= docker.io/cytopia/yamllint:latest
-YAMLLINT_DOCKER ?= $(DOCKER_CMD) $(DOCKER_ARGS) $(YAMLLINT_IMAGE)
-
-COMMODORE_CMD  ?= $(DOCKER_CMD) $(DOCKER_ARGS) projectsyn/commodore:latest component compile . -f tests/test.yml
-JB_CMD         ?= $(DOCKER_CMD) $(DOCKER_ARGS) --entrypoint /usr/local/bin/jb projectsyn/commodore:latest install
-
-CONFTEST_CMD   ?= $(DOCKER_CMD) $(DOCKER_ARGS) --volume "${PWD}/tests/policies:/policy" openpolicyagent/conftest:latest test --policy /policy
+.PHONY: help
+help: ## Show this help
+	@grep -E -h '\s##\s' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = "(: ).*?## "}; {gsub(/\\:/,":", $$1)}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: all
 all: lint
 
 .PHONY: lint
-lint: lint_jsonnet lint_yaml
+lint: lint_jsonnet lint_yaml lint_adoc ## All-in-one linting
 
 .PHONY: lint_jsonnet
-lint_jsonnet: $(JSONNET_FILES)
+lint_jsonnet: $(JSONNET_FILES) ## Lint jsonnet files
 	$(JSONNET_DOCKER) $(JSONNETFMT_ARGS) --test -- $?
 
 .PHONY: lint_yaml
-lint_yaml: $(YAML_FILES)
-	$(YAMLLINT_DOCKER) -f parsable -c $(YAMLLINT_CONFIG) $(YAMLLINT_ARGS) -- $?
+lint_yaml: ## Lint yaml files
+	$(YAMLLINT_DOCKER) -f parsable -c $(YAMLLINT_CONFIG) $(YAMLLINT_ARGS) -- .
+
+.PHONY: lint_adoc
+lint_adoc: ## Lint documentation
+	$(VALE_CMD) $(VALE_ARGS)
 
 .PHONY: format
-format: format_jsonnet
+format: format_jsonnet ## All-in-one formatting
 
 .PHONY: format_jsonnet
-format_jsonnet: $(JSONNET_FILES)
+format_jsonnet: $(JSONNET_FILES) ## Format jsonnet files
 	$(JSONNET_DOCKER) $(JSONNETFMT_ARGS) -- $?
 
+.PHONY: docs-serve
+docs-serve: ## Preview the documentation
+	$(ANTORA_PREVIEW_CMD)
+
 .PHONY: compile
-compile:
-	$(JB_CMD)
-	$(COMMODORE_CMD)
+.compile:
+	mkdir -p dependencies
+	$(COMPILE_CMD)
 
 .PHONY: test
-test: compile test_go test_conftest
+test: commodore_args += -f tests/$(instance).yml
+test: .compile ## Compile the component
+	@echo
+	@echo
+	@cd tests && go test -count 1 ./...
 
-.PHONY: test_go
-test_go:
-	@echo "===> Running Go unit tests"
-	cd tests/unit && go test -v ./...
+.PHONY: gen-golden
+gen-golden: commodore_args += -f tests/$(instance).yml
+gen-golden: clean .compile ## Update the reference version for target `golden-diff`.
+	@rm -rf tests/golden/$(instance)
+	@mkdir -p tests/golden/$(instance)
+	@cp -R compiled/. tests/golden/$(instance)/.
 
-.PHONY: test_conftest
-test_conftest:
-	@echo "===> Running Conftest policies";
-	@$(CONFTEST_CMD) $(shell find . -type f -wholename './compiled/$(COMPONENT_NAME)/*.yaml')
+.PHONY: golden-diff
+golden-diff: commodore_args += -f tests/$(instance).yml
+golden-diff: clean .compile ## Diff compile output against the reference version. Review output and run `make gen-golden golden-diff` if this target fails.
+	@git diff --exit-code --minimal --no-index -- tests/golden/$(instance) compiled/
 
 .PHONY: clean
-clean:
-	rm -r compiled manifests dependencies vendor || true
+clean: ## Clean the project
+	rm -rf .cache compiled dependencies vendor helmcharts jsonnetfile*.json || true
