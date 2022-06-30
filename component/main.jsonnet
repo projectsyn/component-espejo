@@ -19,7 +19,7 @@ local service_account = kube.ServiceAccount('espejo') {
 };
 
 local cluster_role_binding = kube.ClusterRoleBinding('syn-espejo') {
-  subjects_: [service_account],
+  subjects_: [ service_account ],
   roleRef_: cluster_role,
 };
 
@@ -59,6 +59,6 @@ local deployment = kube.Deployment('espejo') {
 // Define outputs below
 {
   '01_namespace': namespace,
-  '05_rbac': [cluster_role, service_account, cluster_role_binding],
+  '05_rbac': [ cluster_role, service_account, cluster_role_binding ],
   '10_deployment': deployment,
 }
