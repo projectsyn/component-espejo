@@ -7,7 +7,7 @@
           "remote": "https://github.com/bitnami-labs/kube-libsonnet"
         }
       },
-      "version": "v1.14.6"
+      "version": "v1.19.0"
     }
   ],
   "legacyImports": true
