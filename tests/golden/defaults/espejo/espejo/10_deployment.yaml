@@ -57,6 +57,7 @@ spec:
           volumeMounts: []
       imagePullSecrets: []
       initContainers: []
+      priorityClassName: system-cluster-critical
       serviceAccountName: espejo
       terminationGracePeriodSeconds: 30
       volumes: []
