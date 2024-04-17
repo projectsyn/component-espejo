@@ -35,7 +35,7 @@ local deployment = kube.Deployment('espejo') {
     template+: {
       spec+: {
         serviceAccountName: service_account.metadata.name,
-        priorityClassName: 'system-cluster-critical',
+        priorityClassName: params.priority_class,
         containers_+: {
           espejo: kube.Container('espejo') {
             image: params.images.espejo.image + ':' + params.images.espejo.tag,

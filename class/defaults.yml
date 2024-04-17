@@ -20,6 +20,9 @@ parameters:
       metrics-addr: ":8080"
 
     extraArgs: []
+
+    priority_class: system-cluster-critical
+
     cluster_role_rules:
       - apiGroups: ['']
         resources: [namespaces, namespaces/status]
