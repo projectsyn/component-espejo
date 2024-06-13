@@ -33,7 +33,8 @@
       "platformAutomerge": false,
       "labels": [
         "dependency",
-        "automerge"
+        "automerge",
+        "bump:patch"
       ]
     }
   ]
