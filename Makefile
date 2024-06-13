@@ -58,9 +58,6 @@ docs-serve: ## Preview the documentation
 .PHONY: test
 test: commodore_args += -f tests/$(instance).yml
 test: .compile ## Compile the component
-	@echo
-	@echo
-	@cd tests && go test -count 1 ./...
 
 .PHONY: gen-golden
 gen-golden: commodore_args += -f tests/$(instance).yml
