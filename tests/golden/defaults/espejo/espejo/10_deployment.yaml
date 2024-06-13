@@ -39,7 +39,7 @@ spec:
                 fieldRef:
                   apiVersion: v1
                   fieldPath: metadata.namespace
-          image: quay.io/vshn/espejo:v0.4.1@sha256:4859847da2f47111cad2d5115a7ced04497732de2ca20d5d4c4f479ed9cf7f6c
+          image: quay.io/vshn/espejo:v0.5.0@sha256:dbfa12c219a8494edc9dc8067bea057774c6a53f4c6bb464beaf479fbb02bd66
           imagePullPolicy: IfNotPresent
           name: espejo
           ports:
