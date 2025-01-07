@@ -8,7 +8,7 @@ parameters:
       - input_paths:
           - espejo/component/app.jsonnet
         input_type: jsonnet
-        output_path: apps/
+        output_path: .
       - output_path: espejo/00_crds/
         input_type: copy
         input_paths:

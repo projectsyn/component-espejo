@@ -1,5 +1,7 @@
 parameters:
   espejo:
+    =_metadata:
+      multi_tenant: true
     namespace: syn-espejo
     git_tag: v0.4.0
     images:
