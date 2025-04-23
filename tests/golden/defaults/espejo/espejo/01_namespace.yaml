@@ -4,4 +4,5 @@ metadata:
   annotations: {}
   labels:
     name: syn-espejo
+    openshift.io/cluster-monitoring: 'true'
   name: syn-espejo

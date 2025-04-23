@@ -6,7 +6,13 @@ local inv = kap.inventory();
 // The hiera parameters for the component
 local params = inv.parameters.espejo;
 
-local namespace = kube.Namespace(params.namespace);
+local namespace = kube.Namespace(params.namespace) {
+  metadata+: {
+    labels+: {
+      'openshift.io/cluster-monitoring': 'true',
+    },
+  },
+};
 
 local cluster_role = kube.ClusterRole('syn-espejo') {
   rules: params.cluster_role_rules,
