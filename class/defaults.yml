@@ -2,6 +2,11 @@ parameters:
   espejo:
     =_metadata:
       multi_tenant: true
+      deprecated: true
+      replaced_by: espejote
+      deprecation_notice: >-
+        The functionality of this component has been moved to the espejote component.
+        See https://hub.syn.tools/espejote/references/parameters.html#_managedresources
     namespace: syn-espejo
     git_tag: v0.4.0
     images:

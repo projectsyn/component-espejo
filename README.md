@@ -1,3 +1,10 @@
+# :warning: Repo Archive Notice
+
+As of November 27, 2025, this component is deprecated and will no longer be updated.
+Use component [espejote](https://github.com/projectsyn/component-espejote) instead of this component.
+
+See https://hub.syn.tools/espejote/references/parameters.html#_managedresources.
+
 # Commodore Component: espejo
 
 This is a [Commodore][commodore] Component for espejo.
